@@ -530,9 +530,10 @@ def format_important_dates_message(data: dict[str, Any]) -> str:
     if not ev:
         lines.append("_Корпоративные события в этом окне не запланированы\\._")
     else:
-        lines.append("*Важные даты и события:*")
-        for title, d, dleft in ev:
-            lines.append(f"• {escape_md(title)} — {d.isoformat()} \\(через {dleft} дн\\.\\)")
+    lines.append("*Важные даты и события:*")
+    for title, d, dleft in ev:
+        date_e = escape_md(d.isoformat())
+        lines.append(f"• {escape_md(title)} — {date_e} \\(через {dleft} дн\\.\\)")
 
     return "\n".join(lines)
 
