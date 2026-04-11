@@ -1,0 +1,256 @@
+{
+  "employees": [
+    {
+      "name": "Елена Смирнова",
+      "role": "портная",
+      "department": "портные",
+      "specialization": "сорочки",
+      "experience_years": 12,
+      "contact": {
+        "phone": "+7-900-111-22-33",
+        "email": "elena@atelier.com"
+      },
+      "birthday": "1985-03-12"
+    },
+    {
+      "name": "Мария Кузьмина",
+      "role": "портная",
+      "department": "портные",
+      "specialization": "костюмы",
+      "experience_years": 9,
+      "contact": {
+        "phone": "+7-900-111-22-44",
+        "email": "maria@atelier.com"
+      },
+      "birthday": "1990-06-25"
+    },
+    {
+      "name": "Ольга Кузнецова",
+      "role": "закройщик",
+      "department": "портные",
+      "specialization": "костюмы",
+      "experience_years": 8,
+      "contact": {
+        "phone": "+7-900-222-44-55",
+        "email": "olga@atelier.com"
+      },
+      "birthday": "1990-07-22"
+    },
+    {
+      "name": "Ирина Павлова",
+      "role": "портная",
+      "department": "портные",
+      "specialization": "костюмы",
+      "experience_years": 11,
+      "contact": {
+        "phone": "+7-900-111-22-55",
+        "email": "irina@atelier.com"
+      },
+      "birthday": "1987-10-14"
+    },
+    {
+      "name": "Павел Орлов",
+      "role": "консультант",
+      "department": "консультанты",
+      "specialization": "классический костюм",
+      "experience_years": 20,
+      "contact": {
+        "phone": "+7-900-111-33-11",
+        "email": "pavel@atelier.com"
+      },
+      "birthday": "1978-02-15"
+    },
+    {
+      "name": "Александр Романов",
+      "role": "консультант",
+      "department": "консультанты",
+      "specialization": "smart casual",
+      "experience_years": 10,
+      "contact": {
+        "phone": "+7-900-111-33-22",
+        "email": "alex@atelier.com"
+      },
+      "birthday": "1989-09-03"
+    },
+    {
+      "name": "Анна Морозова",
+      "role": "главный администратор",
+      "department": "руководство",
+      "specialization": "управление процессами",
+      "experience_years": 6,
+      "contact": {
+        "phone": "+7-900-444-66-77",
+        "email": "anna@atelier.com"
+      },
+      "birthday": "1995-04-18"
+    },
+    {
+      "name": "Дмитрий Волков",
+      "role": "начальник портновского цеха",
+      "department": "руководство",
+      "specialization": "контроль качества",
+      "experience_years": 15,
+      "contact": {
+        "phone": "+7-900-333-55-66",
+        "email": "dmitry@atelier.com"
+      },
+      "birthday": "1982-11-03"
+    },
+    {
+      "name": "Игорь Соколов",
+      "role": "основатель и директор",
+      "department": "руководство",
+      "specialization": "развитие бизнеса",
+      "experience_years": 18,
+      "contact": {
+        "phone": "+7-900-555-66-77",
+        "email": "igor@atelier.com"
+      },
+      "birthday": "1980-01-20"
+    },
+    {
+      "name": "Полина Елисеева",
+      "role": "SMM-менеджер",
+      "department": "маркетинг",
+      "specialization": "контент и соцсети",
+      "experience_years": 3,
+      "contact": {
+        "phone": "+7-900-777-88-99",
+        "email": "polina@atelier.com"
+      },
+      "birthday": "2003-07-10"
+    },
+    {
+      "name": "Кирилл Андреев",
+      "role": "маркетолог",
+      "department": "маркетинг",
+      "specialization": "реклама и аналитика",
+      "experience_years": 5,
+      "contact": {
+        "phone": "+7-900-777-88-11",
+        "email": "kirill@atelier.com"
+      },
+      "birthday": "1996-08-09"
+    },
+    {
+      "name": "Сергей Лебедев",
+      "role": "логист",
+      "department": "логистика",
+      "specialization": "работа с фабриками",
+      "experience_years": 7,
+      "contact": {
+        "phone": "+7-900-888-11-22",
+        "email": "sergey@atelier.com"
+      },
+      "birthday": "1988-03-30"
+    },
+    {
+      "name": "Никита Фёдоров",
+      "role": "логист",
+      "department": "логистика",
+      "specialization": "закупка тканей",
+      "experience_years": 4,
+      "contact": {
+        "phone": "+7-900-888-11-33",
+        "email": "nikita@atelier.com"
+      },
+      "birthday": "1998-12-05"
+    },
+    {
+      "name": "Артём Захаров",
+      "role": "логист",
+      "department": "логистика",
+      "specialization": "контроль поставок",
+      "experience_years": 6,
+      "contact": {
+        "phone": "+7-900-888-11-44",
+        "email": "artem@atelier.com"
+      },
+      "birthday": "1992-07-17"
+    },
+    {
+      "name": "Максим Крылов",
+      "role": "логист",
+      "department": "логистика",
+      "specialization": "документооборот",
+      "experience_years": 5,
+      "contact": {
+        "phone": "+7-900-888-11-55",
+        "email": "maxim@atelier.com"
+      },
+      "birthday": "1994-11-28"
+    },
+    {
+      "name": "Екатерина Степанова",
+      "role": "консультант",
+      "department": "консультант",
+      "specialization": "женский пошив",
+      "experience_years": 2,
+      "contact": {
+        "phone": "79031111111",
+        "email": "kate0480@gmail.com"
+      },
+      "birthday": "1989-04-15"
+    },
+    {
+      "name": "Кристина Воробьева",
+      "role": "Сорочки",
+      "department": "портные",
+      "specialization": "Сорочки",
+      "experience_years": 2,
+      "contact": {
+        "phone": "79999444444",
+        "email": "Kris@email.ru"
+      },
+      "birthday": "1988-07-15"
+    }
+  ],
+  "important_dates": [
+    {
+      "event": "День рождения ателье",
+      "date": "2014-04-15"
+    },
+    {
+      "event": "Корпоратив весна 2026",
+      "date": "2026-06-20"
+    },
+    {
+      "event": "Выставка тканей — Москва",
+      "date": "2026-05-10"
+    }
+  ],
+  "wishlist": [
+    {
+      "author": "Ольга Кузнецова",
+      "item": "Профессиональные портновские ножницы"
+    },
+    {
+      "author": "Павел Орлов",
+      "item": "Наушники Sony WH-1000XM5"
+    },
+    {
+      "author": "Анна Морозова",
+      "item": "Чайный набор из фарфора"
+    },
+    {
+      "author": "Сергей Лебедев",
+      "item": "Кожаный портфель"
+    },
+    {
+      "author": "Полина Елисеева",
+      "item": "киндер и кружка"
+    },
+    {
+      "author": "Екатерина Степанова",
+      "item": "кофемашина"
+    },
+    {
+      "author": "Дмитрий Волков",
+      "item": "Мармелад"
+    },
+    {
+      "author": "Кристина Воробьева",
+      "item": "Конфетки"
+    }
+  ]
+}
