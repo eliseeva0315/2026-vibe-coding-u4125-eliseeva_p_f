@@ -68,6 +68,11 @@ MAIN_MENU_KEYBOARD = ReplyKeyboardMarkup(
     resize_keyboard=True,
 )
 
+# Тексты кнопок главного меню — исключаем из обычных шагов диалога, чтобы сработали fallbacks
+MAIN_MENU_BUTTONS_REGEX = r"^(👥 Сотрудники|📅 Важные даты|🎁 Wishlist|❓ Помощь)$"
+# Текст в диалоге, но не команда и не кнопка меню (чтобы меню обрабатывалось в fallbacks)
+DIALOG_TEXT = filters.TEXT & ~filters.COMMAND & ~filters.Regex(MAIN_MENU_BUTTONS_REGEX)
+
 BTN_EMP_ALL = "Все сотрудники"
 
 load_dotenv()
@@ -1151,13 +1156,31 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return ConversationHandler.END
 
 
+async def menu_fallback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Выход из диалога по кнопке главного меню: очистка состояния и нужный раздел."""
+    text = (update.message.text or "").strip()
+    context.user_data.clear()
+    if text == "👥 Сотрудники":
+        # Переход в сценарий выбора отдела; состояние SEARCH_EMPLOYEE есть и в wish_conv
+        return await cmd_employees(update, context)
+    if text == "📅 Важные даты":
+        await cmd_important_dates(update, context)
+    elif text == "🎁 Wishlist":
+        await cmd_wishlist(update, context)
+    elif text == "❓ Помощь":
+        await cmd_help(update, context)
+    return ConversationHandler.END
+
+
 # --- Текстовые кнопки главного меню ----------------------------------------
 
 
 async def handle_menu_text(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Маршрутизация нажатий ReplyKeyboard (кроме «Сотрудники» — там отдельный диалог)."""
+    """Маршрутизация нажатий ReplyKeyboard, когда нет активного ConversationHandler."""
     text = (update.message.text or "").strip()
-    if text == "📅 Важные даты":
+    if text == "👥 Сотрудники":
+        await cmd_employees(update, context)
+    elif text == "📅 Важные даты":
         await cmd_important_dates(update, context)
     elif text == "🎁 Wishlist":
         await cmd_wishlist(update, context)
@@ -1189,37 +1212,44 @@ def main() -> None:
         entry_points=[CallbackQueryHandler(cb_wish_add, pattern=r"^wish_add$")],
         states={
             WISH_AUTHOR: [
-                MessageHandler(filters.TEXT & ~filters.COMMAND, wish_author),
+                MessageHandler(DIALOG_TEXT, wish_author),
             ],
             WISH_PICK_EMPLOYEE: [
-                MessageHandler(filters.TEXT & ~filters.COMMAND, wish_pick_employee),
+                MessageHandler(DIALOG_TEXT, wish_pick_employee),
             ],
             WISH_ITEM: [
-                MessageHandler(filters.TEXT & ~filters.COMMAND, wish_item),
+                MessageHandler(DIALOG_TEXT, wish_item),
             ],
             NEW_EMP_NAME: [
-                MessageHandler(filters.TEXT & ~filters.COMMAND, new_emp_name),
+                MessageHandler(DIALOG_TEXT, new_emp_name),
             ],
             NEW_EMP_DEPARTMENT: [
-                MessageHandler(filters.TEXT & ~filters.COMMAND, new_emp_department),
+                MessageHandler(DIALOG_TEXT, new_emp_department),
             ],
             NEW_EMP_SPECIALIZATION: [
-                MessageHandler(filters.TEXT & ~filters.COMMAND, new_emp_specialization),
+                MessageHandler(DIALOG_TEXT, new_emp_specialization),
             ],
             NEW_EMP_EXPERIENCE: [
-                MessageHandler(filters.TEXT & ~filters.COMMAND, new_emp_experience),
+                MessageHandler(DIALOG_TEXT, new_emp_experience),
             ],
             NEW_EMP_PHONE: [
-                MessageHandler(filters.TEXT & ~filters.COMMAND, new_emp_phone),
+                MessageHandler(DIALOG_TEXT, new_emp_phone),
             ],
             NEW_EMP_EMAIL: [
-                MessageHandler(filters.TEXT & ~filters.COMMAND, new_emp_email),
+                MessageHandler(DIALOG_TEXT, new_emp_email),
             ],
             NEW_EMP_BIRTHDAY: [
-                MessageHandler(filters.TEXT & ~filters.COMMAND, new_emp_birthday),
+                MessageHandler(DIALOG_TEXT, new_emp_birthday),
+            ],
+            # Тот же шаг, что в emp_conv: из wish-диалога можно перейти сюда через menu_fallback → cmd_employees
+            SEARCH_EMPLOYEE: [
+                MessageHandler(DIALOG_TEXT, employee_category_chosen),
             ],
         },
-        fallbacks=[CommandHandler("cancel", cancel)],
+        fallbacks=[
+            CommandHandler("cancel", cancel),
+            MessageHandler(filters.Regex(MAIN_MENU_BUTTONS_REGEX), menu_fallback),
+        ],
         name="wishlist_conv",
         per_chat=True,
         per_user=True,
@@ -1233,18 +1263,22 @@ def main() -> None:
         ],
         states={
             SEARCH_EMPLOYEE: [
-                MessageHandler(filters.TEXT & ~filters.COMMAND, employee_category_chosen),
+                MessageHandler(DIALOG_TEXT, employee_category_chosen),
             ],
         },
-        fallbacks=[CommandHandler("cancel", cancel)],
+        fallbacks=[
+            CommandHandler("cancel", cancel),
+            MessageHandler(filters.Regex(MAIN_MENU_BUTTONS_REGEX), menu_fallback),
+        ],
         name="employees_conv",
         per_chat=True,
         per_user=True,
     )
 
-    # Сначала диалоги, чтобы не перехватывались общим текстовым обработчиком
-    application.add_handler(emp_conv)
+    # wish_conv раньше emp_conv: иначе entry «👥 Сотрудники» у emp_conv перехватывает текст,
+    # пока пользователь ещё в диалоге wishlist
     application.add_handler(wish_conv)
+    application.add_handler(emp_conv)
     application.add_handler(CommandHandler("start", cmd_start))
     application.add_handler(CommandHandler("help", cmd_help))
     application.add_handler(CommandHandler("find", cmd_find))
