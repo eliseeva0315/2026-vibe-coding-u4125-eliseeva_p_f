@@ -532,7 +532,10 @@ def format_important_dates_message(data: dict[str, Any]) -> str:
     else:
         lines.append("*Важные даты и события:*")
         for title, d, dleft in ev:
-            lines.append(f"• {escape_md(title)} — {d.isoformat()} \\(через {dleft} дн\\.\\)")
+            # ISO-дата содержит «-», в MarkdownV2 их нужно экранировать
+            lines.append(
+                f"• {escape_md(title)} — {escape_md(d.isoformat())} \\(через {dleft} дн\\.\\)"
+            )
 
     return "\n".join(lines)
 
@@ -827,14 +830,19 @@ async def cmd_important_dates(update: Update, context: ContextTypes.DEFAULT_TYPE
     if user:
         log_activity(user.id, user.username, "important_dates", None)
 
-    csv_error = get_csv_error_message()
-    if csv_error:
-        await update.message.reply_text(csv_error, parse_mode=ParseMode.MARKDOWN_V2)
-        return
     data = load_json_safe()
-    data["employees"] = get_employees_source()
+    # Сотрудники для ДР: из CSV, если файл в порядке; иначе — из JSON (события из JSON всегда)
+    if get_csv_error_message() is None:
+        data["employees"] = get_employees_source()
+    else:
+        data["employees"] = list(data.get("employees") or [])
+
     text = format_important_dates_message(data)
-    await update.message.reply_text(text, parse_mode=ParseMode.MARKDOWN_V2)
+    await update.message.reply_text(
+        text,
+        parse_mode=ParseMode.MARKDOWN_V2,
+        reply_markup=MAIN_MENU_KEYBOARD,
+    )
 
 
 # --- Wishlist: просмотр и добавление ---------------------------------------
@@ -1275,10 +1283,9 @@ def main() -> None:
         per_user=True,
     )
 
-    # wish_conv раньше emp_conv: иначе entry «👥 Сотрудники» у emp_conv перехватывает текст,
-    # пока пользователь ещё в диалоге wishlist
-    application.add_handler(wish_conv)
+    # Сначала диалоги, чтобы не перехватывались общим текстовым обработчиком
     application.add_handler(emp_conv)
+    application.add_handler(wish_conv)
     application.add_handler(CommandHandler("start", cmd_start))
     application.add_handler(CommandHandler("help", cmd_help))
     application.add_handler(CommandHandler("find", cmd_find))
